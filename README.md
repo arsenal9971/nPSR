@@ -7,7 +7,7 @@
 This repository contains the implementation of the paper:
 
 PoissonNet: Resolution-Agnostic 3D Shape Reconstruction using Fourier Neural Operators 
-[Hector Andrade-Loarca](http://hectorandrade.xyz/), [Aras Bacho](https://www.ai.math.uni-muenchen.de/members/postdocs/bacho/index.html), [Julius Hege](https://juliushege.com/), [Gitta Kutyniok](https://www.ai.math.uni-muenchen.de/members/professor/kutyniok/index.html)  
+<[Hector Andrade-Loarca](http://hectorandrade.xyz/), [Aras Bacho](https://www.ai.math.uni-muenchen.de/members/postdocs/bacho/index.html), [Julius Hege](https://juliushege.com/), [Gitta Kutyniok](https://www.ai.math.uni-muenchen.de/members/professor/kutyniok/index.html)>
 **3DV Submission**  
 
 
