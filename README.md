@@ -13,9 +13,9 @@ PoissonNet: Resolution-Agnostic 3D Shape Reconstruction using Fourier Neural Ope
 
 If you find our code or paper useful, please consider citing
 ```bibtex
-@article{andrade2023poissonnet,
+@article{anonymous,
   title={PoissonNet: Resolution-Agnostic 3D Shape Reconstruction using Fourier Neural Operators},
-  author={Andrade-Loarca, Hector and Bacho, Aras and Hege, Julius and Kutyniok, Gitta},
+  author={Anonymous},
   journal={arXiv preprint},
   year={2023}
 }
