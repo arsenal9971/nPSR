@@ -1,6 +1,6 @@
 # PoissonNet
 
-### [**Paper**](https://arxiv.org/abs/2106.03452) | [**Project Page**](https://pengsongyou.github.io/sap)  <br>
+### [**Paper**]() | [**Project Page**]()  <br>
 
 ![](./media/figure_benchmark.png)
 
