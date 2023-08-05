@@ -8,8 +8,6 @@ This repository contains the implementation of the paper:
 
 PoissonNet: Resolution-Agnostic 3D Shape Reconstruction using Fourier Neural Operators 
 Anonymous
-**3DV Submission**  
-
 
 If you find our code or paper useful, please consider citing
 ```bibtex
