@@ -1,3 +1,8 @@
+# Code in this file is based on the following project:
+# https://github.com/autonomousvision/shape_as_points
+# Associated with the paper: 
+# Peng, Songyou, et al. "Shape as points: A differentiable poisson solver." Advances in Neural Information Processing Systems 34 (2021): 13032-13044.
+
 import torch
 import io, os, logging, urllib
 import yaml

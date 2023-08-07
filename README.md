@@ -9,7 +9,7 @@ This repository contains the implementation of the paper:
 PoissonNet: Resolution-Agnostic 3D Shape Reconstruction using Fourier Neural Operators 
 Anonymous
 
-If you find our code or paper useful, please consider citing
+We are currently working on a cleaned-up version of this code that includes more documentation and pre-trained weights. If you find our code or paper useful, please consider citing
 ```bibtex
 @article{anonymous,
   title={PoissonNet: Resolution-Agnostic 3D Shape Reconstruction using Fourier Neural Operators},
