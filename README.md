@@ -1,6 +1,6 @@
 # PoissonNet
 
-### [**Paper**]() | [**Project Page**]()  <br>
+### [**Paper**](https://arxiv.org/abs/2308.01766) | [**Project Page**](https://github.com/arsenal9971/PoissonNet/)
 
 ![](./media/figure_benchmark.png)
 
