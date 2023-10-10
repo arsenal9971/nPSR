@@ -1,6 +1,6 @@
 # NeuralPoisson
 
-
+### [**Paper**](https://arxiv.org/abs/2308.01766) | [**Project Page**](https://juliushege.com/poissonnet/)
 
 ![](./media/figure_benchmark.png)
 
