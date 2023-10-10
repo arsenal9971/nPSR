@@ -1,6 +1,6 @@
 # NeuralPoisson
 
-### [**Paper**](https://arxiv.org/abs/2308.01766) | [**Project Page**](https://github.com/arsenal9971/PoissonNet/)
+### [**Paper**]() | [**Project Page**]()
 
 ![](./media/figure_benchmark.png)
 
