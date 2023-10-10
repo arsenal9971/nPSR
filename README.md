@@ -1,6 +1,6 @@
 # NeuralPoisson
 
-### [**Paper**]() | [**Project Page**]()
+
 
 ![](./media/figure_benchmark.png)
 
