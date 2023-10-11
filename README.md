@@ -1,4 +1,4 @@
-# NeuralPoisson
+# Neuralpoisson
 
 ### [**Paper**](https://arxiv.org/abs/2308.01766) | [**Project Page**](https://juliushege.com/poissonnet/)
 
@@ -6,12 +6,12 @@
 
 This repository contains the implementation of the paper:
 
-NeuralPoisson: Resolution-Agnostic Neural Shape Reconstruction
+Neuralpoisson: Resolution-Agnostic Neural Shape Reconstruction
 
 We are currently working on a cleaned-up version of this code that includes more documentation and pre-trained weights. If you find our code or paper useful, please consider citing
 ```bibtex
 @article{anonymous,
-  title={NeuralPoisson: Resolution-Agnostic Neural Shape Reconstruction},
+  title={Neuralpoisson: Resolution-Agnostic Neural Shape Reconstruction},
   author={Anonymous},
   journal={arXiv preprint},
   year={2023}
