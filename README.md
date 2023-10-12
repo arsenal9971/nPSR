@@ -2,7 +2,7 @@
 
 ### [**Paper**](https://arxiv.org/abs/2308.01766) | [**Project Page**](https://juliushege.com/poissonnet/)
 
-![](./media/figure_benchmark.png)
+![](./media/fcf9e348c54012082296d88107d065f6_250K.png)
 
 This repository contains the implementation of the paper:
 
@@ -31,8 +31,8 @@ conda activate neuralpoisson
 
 ## Training - Quick Start
 
-First, download the data. 
+First, download the data from: [ShapeNetsem dataset](https://shapenet.org/download/shapenetsem) and place the binvox files inside `./data`. Then run the script `scripts/generate_training_data_shapenet.py` to generate the training data, modifying the corresponding paths. After the training data has been generated one can simply train the model by running `scritps/train_shapenet.py`.
 
-```bash
-bash scripts/download_data.sh
-```
+## Inference
+
+Use the notebook `examples/Inference.ipynb` to evaluate the model on different shapes. 
