@@ -1,6 +1,6 @@
 # Neuralpoisson
 
-### [**Paper**](https://arxiv.org/abs/2308.01766) | [**Project Page**](https://juliushege.com/poissonnet/)
+### [**Paper**]() | [**Project Page**]()
 
 ![](./media/fcf9e348c54012082296d88107d065f6_250K.png)
 
