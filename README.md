@@ -35,4 +35,4 @@ First, download the data from: [ShapeNetsem dataset](https://shapenet.org/downlo
 
 ## Inference
 
-Use the notebook `examples/Inference.ipynb` to evaluate the model on different shapes. 
+Use the notebook `examples/Inference.ipynb` to evaluate the model on different shapes. You can download our pretrained weights from this [link](https://drive.google.com/drive/folders/1mJqQeDr0lkieeYQdT2WNTBTHgtSdIEa-?usp=sharing).
