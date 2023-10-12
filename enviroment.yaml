@@ -1,4 +1,4 @@
-name: poissonnet
+name: neuralpoisson
 channels:
   - conda-forge
   - defaults

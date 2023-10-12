@@ -26,12 +26,12 @@ You need to first install all the dependencies. For that you can use [anaconda](
 You can create an anaconda environment called `poissonnet` using
 ```
 conda env create -f environment.yaml
-conda activate poissonnet
+conda activate neuralpoisson
 ```
 
 ## Training - Quick Start
 
-First, run the script to get the demo data:
+First, download the data. 
 
 ```bash
 bash scripts/download_data.sh

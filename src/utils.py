@@ -1,5 +1,5 @@
 import sys
-sys.path.append('../../../fourier_neural_operator/')
+sys.path.append('../fno_utils/')
 
 from scipy.ndimage.interpolation import rotate
 
@@ -44,6 +44,12 @@ import torch.nn.functional as F
 
 import trimesh
 import mcubes
+
+
+from typing import Optional
+import numpy as np
+import pycolmap
+import plotly.graph_objects as go
 
 ################################################################
 # 3d fourier layers
@@ -94,9 +100,9 @@ class SpectralConv3d(nn.Module):
         x = torch.fft.irfftn(out_ft, s=(x.size(-3), x.size(-2), x.size(-1)))
         return x
     
-class FNO3d(nn.Module):
+class NeuralPoisson(nn.Module):
     def __init__(self, modes1, modes2, modes3, width):
-        super(FNO3d, self).__init__()
+        super(NeuralPoisson, self).__init__()
 
         """
         The overall network. It contains 4 layers of the Fourier layer.
@@ -210,7 +216,7 @@ class FNO3d_batchnorm(nn.Module):
         self.w0 = nn.Conv3d(self.width, self.width, 1)
         self.w1 = nn.Conv3d(self.width, self.width, 1)
         self.w2 = nn.Conv3d(self.width, self.width, 1)
-        self.w3 = nn.Conv3d(self.width, self.width, 1)
+        self.w3 = nn.Conv3d(self.width, selfgen_batch_exampl.width, 1)
         self.bn0 = torch.nn.BatchNorm3d(self.width)
         self.bn1 = torch.nn.BatchNorm3d(self.width)
         self.bn2 = torch.nn.BatchNorm3d(self.width)
@@ -1884,15 +1890,15 @@ def save_results(voxels, pred_bin, points, path, n_samples, sigma, lowres=True):
     
 def save_results_benchmarks(voxels, pred_bin, points, path):
     n_samples = len(points)
-    saving_path = './output/shapenet'+str(int(np.ceil(n_samples/14000)))+'K/' 
+    saving_path = './output/shapenet'+str(int(np.ceil(n_samples/1000)))+'K/' 
     if not os.path.exists(saving_path):
         os.makedirs(saving_path)
     save_points(points, int(np.ceil(n_samples/50)), saving_path, path.split('/')[-1].replace('.binvox','')+'_measurements')
     save_prediction_mesh(voxels, n_samples, saving_path,path.split('/')[-1].replace('.binvox','')+'_gt')
-    save_prediction_mesh(pred_bin, n_samples, saving_path, path.split('/')[-1].replace('.binvox','')+'_PoissonNet')
+    save_prediction_mesh(pred_bin, n_samples, saving_path, path.split('/')[-1].replace('.binvox','')+'_Neuralpoisson')
     print("Saved results")
 
-def FNO_predict_highres(divergence_tensor_batch,model, batch_size):
+def Neuralpoisson_predict_highres(divergence_tensor_batch,model, batch_size):
     divergence_tensor_batch = torch.Tensor(divergence_tensor_batch).cuda()
 
     div_normalizer = UnitGaussianNormalizer(divergence_tensor_batch)
@@ -2009,3 +2015,161 @@ def gen_batch_from_mesh(path2mesh, n_samples, sigma = 2, grid_size = 256):
         normals_batch.append(sampled_normals)
         path_batch.append(path2mesh)
     return divergence_tensor_batch, mesh_batch,  points_batch, normals_batch, path_batch
+
+
+## Utilities for 3D visualization
+def to_homogeneous(points):
+    pad = np.ones((points.shape[:-1]+(1,)), dtype=points.dtype)
+    return np.concatenate([points, pad], axis=-1)
+
+
+def init_figure(height: int = 800) -> go.Figure:
+    """Initialize a 3D figure."""
+    fig = go.Figure()
+    axes = dict(
+        visible=False,
+        showbackground=False,
+        showgrid=False,
+        showline=False,
+        showticklabels=True,
+        autorange=True,
+    )
+    fig.update_layout(
+        template="plotly_dark",
+        height=height,
+        scene_camera=dict(
+            eye=dict(x=0., y=-.1, z=-2),
+            up=dict(x=0, y=-1., z=0),
+            projection=dict(type="orthographic")),
+        scene=dict(
+            xaxis=axes,
+            yaxis=axes,
+            zaxis=axes,
+            aspectmode='data',
+            dragmode='orbit',
+        ),
+        margin=dict(l=0, r=0, b=0, t=0, pad=0),
+        legend=dict(
+            orientation="h",
+            yanchor="top",
+            y=0.99,
+            xanchor="left",
+            x=0.1
+        ),
+    )
+    return fig
+
+
+def plot_points(
+        fig: go.Figure,
+        pts: np.ndarray,
+        color: str = 'rgba(255, 0, 0, 1)',
+        ps: int = 2,
+        colorscale: Optional[str] = None,
+        name: Optional[str] = None):
+    """Plot a set of 3D points."""
+    x, y, z = pts.T
+    tr = go.Scatter3d(
+        x=x, y=y, z=z, mode='markers', name=name, legendgroup=name,
+        marker=dict(
+            size=ps, color=color, line_width=0.0, colorscale=colorscale))
+    fig.add_trace(tr)
+
+
+def plot_camera(
+        fig: go.Figure,
+        R: np.ndarray,
+        t: np.ndarray,
+        K: np.ndarray,
+        color: str = 'rgb(0, 0, 255)',
+        name: Optional[str] = None,
+        legendgroup: Optional[str] = None,
+        size: float = 1.0):
+    """Plot a camera frustum from pose and intrinsic matrix."""
+    W, H = K[0, 2]*2, K[1, 2]*2
+    corners = np.array([[0, 0], [W, 0], [W, H], [0, H], [0, 0]])
+    if size is not None:
+        image_extent = max(size * W / 1024.0, size * H / 1024.0)
+        world_extent = max(W, H) / (K[0, 0] + K[1, 1]) / 0.5
+        scale = 0.5 * image_extent / world_extent
+    else:
+        scale = 1.0
+    corners = to_homogeneous(corners) @ np.linalg.inv(K).T
+    corners = (corners / 2 * scale) @ R.T + t
+
+    x, y, z = corners.T
+    rect = go.Scatter3d(
+        x=x, y=y, z=z, line=dict(color=color), legendgroup=legendgroup,
+        name=name, marker=dict(size=0.0001), showlegend=False)
+    fig.add_trace(rect)
+
+    x, y, z = np.concatenate(([t], corners)).T
+    i = [0, 0, 0, 0]
+    j = [1, 2, 3, 4]
+    k = [2, 3, 4, 1]
+
+    pyramid = go.Mesh3d(
+        x=x, y=y, z=z, color=color, i=i, j=j, k=k,
+        legendgroup=legendgroup, name=name, showlegend=False)
+    fig.add_trace(pyramid)
+    triangles = np.vstack((i, j, k)).T
+    vertices = np.concatenate(([t], corners))
+    tri_points = np.array([
+        vertices[i] for i in triangles.reshape(-1)
+    ])
+
+    x, y, z = tri_points.T
+    pyramid = go.Scatter3d(
+        x=x, y=y, z=z, mode='lines', legendgroup=legendgroup,
+        name=name, line=dict(color=color, width=1), showlegend=False)
+    fig.add_trace(pyramid)
+
+
+def plot_camera_colmap(
+        fig: go.Figure,
+        image: pycolmap.Image,
+        camera: pycolmap.Camera,
+        name: Optional[str] = None,
+        **kwargs):
+    """Plot a camera frustum from PyCOLMAP objects"""
+    plot_camera(
+        fig,
+        image.rotmat().T,
+        image.projection_center(),
+        camera.calibration_matrix(),
+        name=name or str(image.image_id),
+        **kwargs)
+
+
+def plot_cameras(
+        fig: go.Figure,
+        reconstruction: pycolmap.Reconstruction,
+        **kwargs):
+    """Plot a camera as a cone with camera frustum."""
+    for image_id, image in reconstruction.images.items():
+        plot_camera_colmap(
+            fig, image, reconstruction.cameras[image.camera_id], **kwargs)
+
+
+def plot_reconstruction(
+        fig: go.Figure,
+        rec: pycolmap.Reconstruction,
+        max_reproj_error: float = 6.0,
+        color: str = 'rgb(0, 0, 255)',
+        name: Optional[str] = None,
+        min_track_length: int = 2,
+        points: bool = True,
+        cameras: bool = True,
+        cs: float = 1.0):
+    # Filter outliers
+    bbs = rec.compute_bounding_box(0.001, 0.999)
+    # Filter points, use original reproj error here
+    xyzs = [p3D.xyz for _, p3D in rec.points3D.items() if (
+                            (p3D.xyz >= bbs[0]).all() and
+                            (p3D.xyz <= bbs[1]).all() and
+                            p3D.error <= max_reproj_error and
+                            p3D.track.length() >= min_track_length)]
+    if points:
+        plot_points(fig, np.array(xyzs), color=color, ps=1, name=name)
+    if cameras:
+        plot_cameras(fig, rec, color=color, legendgroup=name, size=cs)
