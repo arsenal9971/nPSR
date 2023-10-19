@@ -1,4 +1,4 @@
-name: neuralpoisson
+name: npsr
 channels:
   - conda-forge
   - defaults
