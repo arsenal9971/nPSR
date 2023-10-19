@@ -1,4 +1,4 @@
-# Neuralpoisson
+# Neural Poisson Surface Reconstruction (nPSR)
 
 ### [**Paper**]() | [**Project Page**]()
 
@@ -6,12 +6,12 @@
 
 This repository contains the implementation of the paper:
 
-Neuralpoisson: Resolution-Agnostic Neural Shape Reconstruction
+Neural Poisson Surface Reconstruction (nPSR): Resolution-Agnostic Shape Reconstruction from Point Clouds
 
 We are currently working on a cleaned-up version of this code that includes more documentation and pre-trained weights. If you find our code or paper useful, please consider citing
 ```bibtex
 @article{anonymous,
-  title={Neuralpoisson: Resolution-Agnostic Neural Shape Reconstruction},
+  title={Neural Poisson Surface Reconstruction: Resolution-Agnostic Shape Reconstruction from Point Clouds},
   author={Anonymous},
   journal={arXiv preprint},
   year={2023}
@@ -23,10 +23,10 @@ We are currently working on a cleaned-up version of this code that includes more
 
 You need to first install all the dependencies. For that you can use [anaconda](https://www.anaconda.com/). 
 
-You can create an anaconda environment called `poissonnet` using
+You can create an anaconda environment called `npsr` using
 ```
 conda env create -f environment.yaml
-conda activate neuralpoisson
+conda activate npsr
 ```
 
 ## Training - Quick Start
