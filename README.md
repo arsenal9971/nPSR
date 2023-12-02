@@ -1,6 +1,6 @@
 # Neural Poisson Surface Reconstruction (nPSR)
 
-### [**Paper**]() | [**Project Page**]()
+### [**Paper**](https://arxiv.org/abs/2308.01766) | [**Project Page**](https://juliushege.com/npsr/)
 
 ![](./media/fcf9e348c54012082296d88107d065f6_250K.png)
 
@@ -10,10 +10,10 @@ Neural Poisson Surface Reconstruction (nPSR): Resolution-Agnostic Shape Reconstr
 
 We are currently working on a cleaned-up version of this code that includes more documentation and pre-trained weights. If you find our code or paper useful, please consider citing
 ```bibtex
-@article{anonymous,
+@article{andrade2023npsr,
   title={Neural Poisson Surface Reconstruction: Resolution-Agnostic Shape Reconstruction from Point Clouds},
-  author={Anonymous},
-  journal={arXiv preprint},
+  author={Hector Andrade-Loarca, Julius Hege, Daniel Cremers, Gitta Kutyniok},
+  journal={arXiv:2308.01766},
   year={2023}
 }
 ```
